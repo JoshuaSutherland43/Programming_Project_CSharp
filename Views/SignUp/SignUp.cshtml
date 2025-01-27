@@ -1,0 +1,88 @@
+﻿@model PROG_POE.Models.Data
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="signup-container-wrapper">
+    <div class="signup-container">
+        <h1>Sign Up</h1>
+        <br />
+        <div class="row" id="divMessage" runat="server">
+        </div>
+        <form asp-action="SignUp" method="post">
+            <div class="form-grid">
+                <div class="form-group col-md-6">
+                    <label class="labelL" for="First_Name">Name</label>
+                    <input type="text" class="form-control input_width2" id="First_Name" name="FirstName" required />
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label class="labelL" for="Email">Email</label>
+                    <input type="email" class="form-control input_width2" id="Email" name="Email" required />
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label class="labelL" for="Surname">Surname</label>
+                    <input type="text" class="form-control input_width2" id="Surname" name="Surname" required />
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label class="labelL" for="Password">Password</label>
+                    <input type="password" class="form-control input_width2" id="Password" name="Password" required />
+                </div>
+                
+                <div class="form-group col-md-6">
+                    <label class="labelL" for="ConfirmPassword">Confirm Password</label>
+                    <input type="password" class="form-control input_width2" id="ConfirmPassword" name="ConfirmPassword" required />
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign Up!</button>
+            <br /><br />
+            <label class="col-form-label">Already have an account?</label>
+            <a href="@Url.Action("Login", "Login")" class="btn btn-primary">Login</a>
+        </form>
+    </div>
+</div>
+
+<style>
+    .input_width2 {
+        width: 350px;
+    }
+    .labelL {
+        text-align: left; 
+        display: block; 
+        margin-bottom: 5px;
+    }
+
+    .signup-container-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; 
+        height: 100vh;
+        padding-top: 30px; 
+    }
+
+    .signup-container {
+        background-color: White;
+        padding: 30px; 
+        border-radius: 8px;
+        max-width: 800px; 
+        width: 100%;
+        text-align: center;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px; 
+        margin-bottom: 15px; 
+    }
+
+    .form-group {
+        margin-bottom: 0;
+    }
+</style>

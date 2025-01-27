@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PROG_POE</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PROG_POE.styles.css" asp-append-version="true" />
+</head>
+<body style="background-color: whitesmoke">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light navbar-custom border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav flex-grow-1">
+                    </ul>
+                </div>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark margin-right:10px" asp-controller="SignUp" asp-action="SignUp">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark margin-left:10px" asp-controller="Login" asp-action="Login">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="d-flex">
+        <nav class="nav flex-column navbar-custom sidebar">
+            <br />
+            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <a class="nav-link text-light" asp-area="" asp-controller="Tracking" asp-action="Index">Track</a>
+            <a class="nav-link text-light" asp-area="" asp-controller="ProgrammeCoordinator" asp-action="Index">Programme Co-ordinator</a>
+            <a class="nav-link text-light" asp-area="" asp-controller="AcademicManager" asp-action="Index">AcademicManager</a>
+            <a class="nav-link text-light" asp-area="" asp-controller="HR" asp-action="Index">HR Page</a>
+        </nav>
+
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <footer class="border-top footer text-muted">
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+<style>
+    .background1 {
+        background-image: url('https://images.squarespace-cdn.com/content/v1/5ee593c3d5b9bf46e49ba321/1703585113728-5I5KD2U9P6A3XEMP3HJ0/Lexta_Services_banner.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .navbar-custom {
+        background-color: white;
+    }
+
+    .sidebar {
+        width: 200px;
+        background-color: rgba(0, 0, 0, 0.8);
+        height: 100vh;
+        padding-top: 20px;
+        position: fixed;
+        left: 0;
+        top: 0;
+    }
+
+    .nav-link {
+        color: white;
+    }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+    .container {
+        margin-left: 220px;
+    }
+
+    main {
+        padding: 20px;
+    }
+</style>
+
+<!-- Referencing
+===========================
+
+1) Mark Otto, J.T. (no date) Tables, · Bootstrap v5.0. Available at: https://getbootstrap.com/docs/5.0/content/tables/ (Accessed: 30 August 2024).
+
+2) W3schools.com (no date) W3Schools Online Web Tutorials. Available at: https://www.w3schools.com/css/css_boxmodel.asp (Accessed: 30 August 2024).
+
+3) Mark Otto, J.T. (no date b) Containers, · Bootstrap v5.0. Available at: https://getbootstrap.com/docs/5.0/layout/containers/ (Accessed: 30 August 2024).
+
+4) Rudman, G. (2024) BCA2 CLDV Part 2 Workshop, YouTube. Available at: https://www.youtube.com/watch?v=I_tiFJ-nlfE&list=LL&index=1&t=13s (Accessed: 18 October 2024).
+
+5) W3Schools (no date) W3schools.com, How To Create a Side Navigation Menu. Available at: https://www.w3schools.com/howto/howto_js_sidenav.asp (Accessed: 18 October 2024).
+-->

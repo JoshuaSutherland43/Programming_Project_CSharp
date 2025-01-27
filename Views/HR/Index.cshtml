@@ -1,0 +1,112 @@
+﻿@model List<PROG_POE.Models.Invoice>
+@inject PROG_POE.Models.Data da
+   
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+<h2>Invoices</h2>
+<div class="table-container" style="overflow-x: auto;" id="divAdd">
+    <table class="table table-responsive table-hover">
+        <thead>
+            <tr class="table-active">
+                <th>Invoice Number</th>
+                <th>Lecturer ID</th>
+                <th>Lecturer Name</th>
+                <th>Invoice Date</th>
+                <th>Total Amount</th>
+                <th>Invoice Document</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Count > 0)
+            {
+
+                foreach (var invoice in Model)
+                {
+                    <tr>
+                        <td>@invoice.InvoiceID</td>
+                        <td>@invoice.UserID</td>
+                        <td>@await da.GetLecturerFullNameFromLecturer(invoice.UserID)</td>
+                        <td>@invoice.InvoiceDate.ToString("yyyy-MM-dd")</td>
+                        <td>@invoice.TotalAmount.ToString("C2")</td>
+                        <td>
+                            <form asp-action="InvoiceToPDF" method="post">
+                                <input type="hidden" name="invoiceId" value="@invoice.InvoiceID" />
+                                <button type="submit" class="btn btn-success">Download Invoice</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6">No processed invoices available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<style>
+    body {
+        background-color: #f0f0f0; /* Light grey background */
+    }
+
+    table {
+        width: 100%;
+    }
+
+    .input_width1 {
+        width: 150px;
+        margin: 10px 0;
+    }
+
+    th {
+        background-color: white;
+        color: black;
+        height: 70px;
+        text-align: center;
+    }
+
+    td_reject {
+        text-align: center;
+        background-color: orangered;
+    }
+
+    td_approve {
+        text-align: center;
+        background-color: lightgreen;
+    }
+
+    td {
+        text-align: center;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    label {
+        font-size: 2em;
+    }
+
+    .button_r {
+        float: right;
+    }
+</style>
+
+<!-- Referencing
+===========================
+
+1) Mark Otto, J.T. (no date) Tables, · Bootstrap v5.0. Available at: https://getbootstrap.com/docs/5.0/content/tables/ (Accessed: 30 August 2024).
+
+2) W3schools.com (no date) W3Schools Online Web Tutorials. Available at: https://www.w3schools.com/css/css_boxmodel.asp (Accessed: 30 August 2024).
+
+3) Mark Otto, J.T. (no date b) Containers, · Bootstrap v5.0. Available at: https://getbootstrap.com/docs/5.0/layout/containers/ (Accessed: 30 August 2024).
+
+4) Rudman, G. (2024) BCA2 CLDV Part 2 Workshop, YouTube. Available at: https://www.youtube.com/watch?v=I_tiFJ-nlfE&list=LL&index=1&t=13s (Accessed: 18 October 2024).
+
+-->

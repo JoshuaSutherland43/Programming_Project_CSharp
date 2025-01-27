@@ -1,0 +1,94 @@
+﻿@model List<PROG_POE.Models.Claim>
+@inject PROG_POE.Models.Data da
+@{
+    ViewData["Title"] = "Claim Tracker";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+
+<div >
+    <center>
+        <div class="table-container rounded-box">
+            <h2>@ViewData["Title"]</h2>
+            <hr class="welcome-line" />
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped rounded-table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Claim ID</th>
+                            <th>Upload Date</th>
+                            <th>Approved Date</th>
+                            <th>Status</th>
+                            <th>Projected Earnings</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var claim in Model)
+                            {
+                                <tr>
+                                    <td>@claim.ClaimID</td>
+                                    <td>@claim.UploadDate.ToString("yyyy-MM-dd")</td>
+                                    <td>@(claim.ApprovedDate.HasValue ? claim.ApprovedDate.Value.ToString("yyyy-MM-dd") : "Pending")</td>
+                                    <td>@claim.Status</td>
+                                    <td>R @await da.GetAmountEarned(claim.ClaimID)</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center">No Claims Available.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </center>
+</div>
+
+<style>
+    .table-container {
+        opacity: 0.8;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #dee2e6;
+        background-color: #f8f9fa;
+        padding: 20px; /* Adds padding around the table */
+    }
+
+    .welcome-line {
+        border: none;
+        height: 2px;
+        background-color: black;
+        margin: 10px 0;
+        width: 100%;
+    }
+
+    .rounded-table {
+        border-radius: 10px;
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+    }
+
+    
+</style>
+
+<!-- Referencing
+===========================
+
+1) Mark Otto, J.T. (no date) Tables, · Bootstrap v5.0. Available at: https://getbootstrap.com/docs/5.0/content/tables/ (Accessed: 30 August 2024).
+
+2) W3schools.com (no date) W3Schools Online Web Tutorials. Available at: https://www.w3schools.com/css/css_boxmodel.asp (Accessed: 30 August 2024).
+
+3) Mark Otto, J.T. (no date b) Containers, · Bootstrap v5.0. Available at: https://getbootstrap.com/docs/5.0/layout/containers/ (Accessed: 30 August 2024).
+-->

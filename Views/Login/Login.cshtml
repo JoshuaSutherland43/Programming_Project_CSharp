@@ -1,0 +1,66 @@
+﻿@model PROG_POE.Models.Lecturer
+
+<!-- If Sign-Up does not work, use these credentials. -->
+<!-- User Email: joshua.jms43@gmail.com -->
+<!-- User Password: 111 -->
+<!-- User Email: bobby.43@email.com -->
+<!-- User Password: 111 -->
+<!-- Admin Email: Sam.40@email.com -->
+<!-- Admin Password: 1234 -->
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="login-container-wrapper">
+    <div class="login-container">
+        <h1>Login</h1>
+        <br />
+
+        <div class="row">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @ViewData.ModelState[""].Errors[0].ErrorMessage
+                </div>
+            }
+        </div>
+        <form asp-action="Login" method="post">
+            <div class="form-group">
+                <label for="Email">Email:</label>
+                <input type="email" class="form-control" id="Email" name="Email" required />
+            </div>
+            <br />
+            <div class="form-group">
+                <label for="Password">Password:</label>
+                <input type="password" class="form-control" id="Password" name="Password" required />
+            </div>
+            <br />
+            <button type="submit" class="btn btn-primary">Login</button>
+            <br /><br />
+            <label class="col-form-label">Don't have an account?</label>
+            <a href="@Url.Action("SignUp", "SignUp")" class="btn">Sign Up</a>
+        </form>
+    </div>
+</div>
+
+<style>
+    .login-container-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: 100vh;
+        padding-top: 30px; 
+    }
+
+    .login-container {
+        background-color: White;
+        padding: 30px;
+        border-radius: 8px;
+        max-width: 500px; 
+        width: 100%;
+        text-align: center;
+    }
+</style>

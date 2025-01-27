@@ -1,0 +1,208 @@
+﻿@model List<PROG_POE.Models.Claim>
+
+@inject PROG_POE.Models.Data da
+
+@{
+    bool showAddDiv = ViewData["ShowAddDiv"] as bool? ?? false;
+    bool showWarningLabel = ViewData["ShowWarningLabel"] as bool? ?? false;
+    var pendingClaims = ViewBag.PendingClaims as List<Claim>;
+    var processedClaims = ViewBag.ProcessedClaims as List<Claim>;
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+@if (showAddDiv)
+{
+    
+    <h2>Pending Claims</h2>
+    <div class="table-container" style="overflow-x: auto;" id="divAdd">
+        <form>
+            <table class="table table-responsive table-hover">
+                <thead>
+                    <tr class="table-active">
+                        <th>Claim ID</th>
+                        <th>Lecturer ID</th>
+                        <th>Lecturer Name</th>
+                        <th>Hours Worked</th>
+                        <th>Rate</th>
+                        <th>Upload Date</th>
+                        <th>Documentation</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (pendingClaims != null && pendingClaims.Count > 0)
+                    {
+                        foreach (var claim in pendingClaims)
+                        {
+                            <tr>
+                                <td>@claim.ClaimID</td>
+                                <td>@claim.UserID</td>
+                                <td>@await da.GetUserFullNameByClaim(claim.ClaimID)</td>
+                                <td>@claim.Hours</td>
+                                <td>
+                                    <span class="form-control-plaintext">
+                                        @claim.Rate.ToString("F2")
+                                    </span>
+                                </td>
+                                <td>@claim.UploadDate.ToString("yyyy-MM-dd")</td>
+                                <td>
+                                    <a href="@Url.Action("OpenFile", "Home", new { fileName = claim.FilePath })" class="btn btn-primary" target="_blank">Download</a>
+                                </td>
+                                <form method="post" asp-action="UpdateClaim" style="display:inline;">
+                                <td>
+                                    <input type="hidden" name="claimID" value="@claim.ClaimID" />
+                                    <select class="form-control" name="status">
+                                        <option value="Pending">Pending</option>
+                                        <option value="Approved">Approved</option>
+                                        <option value="Rejected">Rejected</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-warning">Update</button>
+                                </td>
+                </form>
+                </tr>
+                        }
+                    }
+                    else
+                    {
+            <tr>
+                <td colspan="9">No Claims Available.</td>
+            </tr>
+                    }
+        </tbody>
+        </table>
+        </form>
+    </div>
+
+    <br />
+
+    <h2>Processed Claims</h2>
+    <div class="table-container" style="overflow-x: auto;" id="divProcessed">
+        <form method="get" asp-action="Index">
+            <input class="form-control input_width1" type="text" name="lecturerId" placeholder="Search by Lecturer ID" />
+            <button class="btn btn-primary" type="submit">Search</button>
+            <button class="btn btn-primary button_r" type="submit" name="reset" value="true">Reset</button>
+        </form>
+        <br />
+        <table class="table table-responsive table-hover">
+            <thead>
+                <tr class="table-active">
+                    <th>Claim ID</th>
+                    <th>Lecturer ID</th>
+                    <th>Lecturer Name</th>
+                    <th>Hours Worked</th>
+                    <th>Rate</th>
+                    <th>Upload Date</th>
+                    <th>Documentation</th>
+                    <th>Status</th>
+                    <th>Approved Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (processedClaims != null && processedClaims.Count > 0)
+                {
+                    foreach (var claim in processedClaims)
+                    {
+                        <tr>
+                            <td>@claim.ClaimID</td>
+                            <td>@claim.UserID</td>
+                            <td>@await da.GetUserFullNameByClaim(claim.ClaimID)</td>
+                            <td>@claim.Hours</td>
+                            <td>
+                                <span class="form-control-plaintext">
+                                    @claim.Rate.ToString("F2")
+                                </span>
+                            </td>
+                            <td>@claim.UploadDate.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                <a href="@Url.Action("OpenFile", "Home", new { fileName = claim.FilePath })" class="btn btn-primary" target="_blank">Download</a>
+                            </td>
+                            <td>@claim.Status</td>
+                            <td>@claim.ApprovedDate?.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="9">No Processed Claims Available.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@if (showWarningLabel)
+{
+    <label id="lblWarning" class="text-danger">Warning: You are not authorized to view this page.</label>
+}
+
+<style>
+    body {
+        background-color: #f0f0f0; /* Light grey background */
+    }
+
+    table {
+        width: 100%;
+    }
+
+    .input_width1 {
+        width: 150px;
+        margin: 10px 0;
+    }
+
+    th {
+        background-color: white;
+        color: black;
+        height: 70px;
+        text-align: center;
+    }
+
+    td_reject {
+        text-align: center;
+        background-color: orangered;
+    }
+
+    td_approve {
+        text-align: center;
+        background-color: lightgreen;
+    }
+
+    td {
+        text-align: center;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    label {
+        font-size: 2em;
+    }
+
+    .button_r {
+        float: right;
+    }
+</style>
+
+<!-- Referencing
+===========================
+
+1) Mark Otto, J.T. (no date) Tables, · Bootstrap v5.0. Available at: https://getbootstrap.com/docs/5.0/content/tables/ (Accessed: 30 August 2024).
+
+2) W3schools.com (no date) W3Schools Online Web Tutorials. Available at: https://www.w3schools.com/css/css_boxmodel.asp (Accessed: 30 August 2024).
+
+3) Mark Otto, J.T. (no date b) Containers, · Bootstrap v5.0. Available at: https://getbootstrap.com/docs/5.0/layout/containers/ (Accessed: 30 August 2024).
+
+4) Rudman, G. (2024) BCA2 CLDV Part 2 Workshop, YouTube. Available at: https://www.youtube.com/watch?v=I_tiFJ-nlfE&list=LL&index=1&t=13s (Accessed: 18 October 2024). 
+
+-->
